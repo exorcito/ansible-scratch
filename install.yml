@@ -1,0 +1,65 @@
+- hosts: main
+  tasks:
+    - name: Install ubuntu packages
+      become: true
+      apt:
+        name:
+            - htop
+            - nfs-common
+            - net-tools
+
+    - name: Install pip packages
+      pip:
+        name:
+          - pywinrm
+          - jsondiff
+
+- hosts: master,managers
+  tasks:
+    - name: Install ubuntu packages
+      become: true
+      apt:
+        name:
+            - auditd
+            - apt-transport-https
+            - ca-certificates
+            - htop
+            - net-tools
+            - nfs-common
+            - ntp
+            - python3-dev
+            - python3-pip
+            - python3-venv
+            - python-dev
+            - python-pip
+            - s3fs
+            - sysvbanner
+            - zsh
+        state: latest
+
+    - name: Install docker
+      pip:
+        name:
+          - jsondiff
+          - docker-compose
+          - ansible
+
+- hosts: ansible,managers            
+    - name: Verify share NFS
+      shell: grep "^mustafar1.sw.com:/share" /etc/fstab
+      register: test_fstab_data
+      ignore_errors: yes
+    
+    - debug: msg="{{test_fstab_data.stdout}}"
+
+    - name: Add share to fstab
+      lineinfile:
+        dest: /etc/fstab
+        line: "mustafar1.sw.com:/share /share nfs x-systemd.automount,rw,nolock 0 0"
+      become: true        
+      register: fstab
+      when: test_fstab_data != ""           
+
+    - name: Mount /share
+      shell: mount /share
+      become: true      

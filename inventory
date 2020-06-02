@@ -1,0 +1,11 @@
+[ansible]
+awx.sw.com
+
+[master]
+mustafar1.sw.com
+
+[managers]
+mustafar2.sw.com
+mustafar3.sw.com
+[managers:vars]
+ansible_python_interpreter=/usr/bin/python3
