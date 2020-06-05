@@ -1,0 +1,30 @@
+- name: Install ubuntu packages in ansible-controller
+  become: true
+  apt:
+    name:
+      - net-tools
+      - auditd
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg2
+      - software-properties-common
+      - htop
+      - net-tools
+      - ntp
+      - python3-dev
+      - python3-pip
+      - python3-venv
+      - python-dev
+      - python-pip
+      - python-setuptools
+      - virtualenv
+      - s3fs
+      - sysvbanner
+
+- name: Install pip packages in ansible-controller
+  become: true
+  pip:
+    name:
+      - pywinrm
+      - jsondiff

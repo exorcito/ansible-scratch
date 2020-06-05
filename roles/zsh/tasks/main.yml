@@ -1,0 +1,61 @@
+    - name: Install ubuntu packages in ansible-controller
+      become: true
+      apt:
+        name:
+            - autojump
+            - zsh
+            - zsh-antigen
+            - zsh-syntax-highlighting
+
+    - name: Check if .zshrc exists
+      stat:
+        path: ~/.zshrc
+      register: stat_rc_result
+    
+    - name: Check if .oh-my-zsh exists
+      stat:
+        path: ~/.oh-my-zsh
+      register: stat_oh_my_zsh_result
+    
+    - name: Cloning oh-my-zsh repo from git
+      git:
+        repo=https://github.com/robbyrussell/oh-my-zsh
+        dest=~/.oh-my-zsh
+      when: not stat_oh_my_zsh_result.stat.exists
+
+    - name: Cloning theme Powerline10K
+      git:
+        repo=https://github.com/romkatv/powerlevel10k.git
+        dest=~/.oh-my-zsh/custom/themes/powerlevel10k
+      when: not stat_oh_my_zsh_result.stat.exists        
+
+    - name: Install plugin ZSH - completions
+      git:
+        repo=git://github.com/zsh-users/zsh-completions.git
+        dest=~/.oh-my-zsh/custom/plugins/zsh-completions
+      when: not stat_oh_my_zsh_result.stat.exists        
+  
+    - name: Install plugin ZSH - suggestions
+      git:
+        repo=https://github.com/zsh-users/zsh-autosuggestions
+        dest=~/.oh-my-zsh/custom/plugins/zsh-autosuggestions          
+      when: not stat_oh_my_zsh_result.stat.exists        
+
+    - name: Define default shell ZSH
+      become: true
+      shell: chsh exorcito -s /usr/bin/zsh
+      when: not stat_rc_result.stat.exists      
+  
+    - name: Cloning custom .zshrc file from git
+      git:
+        repo=https://github.com/exorcito/dotfiles.git
+        dest=~/dotfiles
+      when: not stat_rc_result.stat.exists             
+  
+    - name: Delete ZSH profile
+      shell: rm ~/.zshrc
+      when: not stat_rc_result.stat.exists     
+  
+    - name: Install ZSH profile
+      shell: ln -s ~/dotfiles/.zshrc ~/.zshrc
+      when: not stat_rc_result.stat.exists           

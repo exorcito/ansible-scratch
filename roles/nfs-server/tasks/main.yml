@@ -1,0 +1,19 @@
+- name: Install NFS Server
+  apt:
+    name: 
+      - nfs-server
+
+- name: Verify export /share
+  shell: grep "^/share" /etc/exports
+  register: test_export_data
+  ignore_errors: yes
+
+- name: Add export /share
+  lineinfile:
+    dest: /etc/exports
+    line: "/share mustafar2.sw.com(rw,sync,no_subtree_check) mustafar3.sw.com(rw,sync,no_subtree_check) bakura.sw.com(rw,sync,no_subtree_check)"
+  when: test_export_data != ""
+
+- name: Refresh export
+  shell: exportfs -a
+  become: true

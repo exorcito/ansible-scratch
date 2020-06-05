@@ -1,0 +1,24 @@
+- name: Install ubuntu packages in ansible-controller
+  become: true
+  apt:
+    name:
+      - nfs-common
+
+- name: Verify share NFS
+  shell: grep "^mustafar1.sw.com:/share" /etc/fstab
+  register: test_fstab_data
+  ignore_errors: yes
+
+- name: Add share to fstab
+  lineinfile:
+    dest: /etc/fstab
+    line: "mustafar1.sw.com:/share /share nfs x-systemd.automount,rw,nolock 0 0"
+  become: true        
+  register: fstab
+  when: test_fstab_data != ""           
+
+- name: Mount /share
+  mount:
+    path: /share
+    state: remounted
+  become: true      
