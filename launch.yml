@@ -1,3 +1,7 @@
+- hosts: master,managers
+  roles:
+    - ubuntu
+
 - hosts: ansible,master,managers
   roles:
     - zsh
@@ -5,16 +9,8 @@
 - hosts: ansible
   roles:
     - awx
+    - nfs-server
 
 - hosts: master,managers
   roles:
-    - ubuntu
-    - docker
-
-- hosts: master
-  roles:
-    - nfs-server
-      
-- hosts: ansible,managers
-  roles:
-     - nfs-client
+    - nfs-client

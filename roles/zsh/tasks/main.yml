@@ -50,12 +50,16 @@
       git:
         repo=https://github.com/exorcito/dotfiles.git
         dest=~/dotfiles
+        force=yes
       when: not stat_rc_result.stat.exists             
   
     - name: Delete ZSH profile
-      shell: rm ~/.zshrc
-      when: not stat_rc_result.stat.exists     
+      file:
+        path: ~/.zshrc
+        state: absent
   
     - name: Install ZSH profile
-      shell: ln -s ~/dotfiles/.zshrc ~/.zshrc
-      when: not stat_rc_result.stat.exists           
+      copy:
+        src: ~/dotfiles/.zshrc 
+        dest: ~/.zshrc
+      #when: not stat_rc_result.stat.exists           

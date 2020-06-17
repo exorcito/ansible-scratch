@@ -10,16 +10,18 @@
       - curl
       - gnupg2
       - software-properties-common
+      - lastpass-cli
+      - sshpass
       - ntp
       - python3-dev
       - python3-pip
       - python3-venv
       - python-dev
-      - python-pip
       - python-setuptools
       - virtualenv
       - s3fs
       - sysvbanner
+    update_cache: yes
 
 - name: Install pip packages in machines
   become: true
