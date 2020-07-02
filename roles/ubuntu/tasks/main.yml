@@ -8,7 +8,7 @@
 - name: set up authorized keys for the exorcito user
   authorized_key: user=exorcito key="{{item}}"
   with_file:
-    - ~/.ssh/id_rsa.pub
+    - /home/exorcito/.ssh/id_rsa.pub
 
 - name: Upgrade all apt packages
   become: true
