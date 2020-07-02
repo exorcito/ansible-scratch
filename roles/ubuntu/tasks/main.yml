@@ -9,6 +9,7 @@
   authorized_key: user=exorcito key="{{item}}"
   with_file:
     - /home/exorcito/.ssh/id_rsa.pub
+  ignore_errors: yes
 
 - name: Upgrade all apt packages
   become: true
