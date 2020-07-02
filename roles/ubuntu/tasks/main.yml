@@ -1,3 +1,22 @@
+- name: allow 'exorcito' to have passwordless sudo
+  become: true
+  lineinfile:
+    dest: /etc/sudoers
+    line: 'ubuntu ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+   
+- name: set up authorized keys for the exorcito user
+  authorized_key: user=exorcito key="{{item}}"
+  with_file:
+    - ~/.ssh/id_rsa.pub
+
+- name: Upgrade all apt packages
+  become: true
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+
 - name: Install ubuntu packages in machines
   become: true
   apt:
@@ -23,8 +42,20 @@
       - sysvbanner
     update_cache: yes
 
+- name: Upgrade all apt packages
+  become: true
+  register: updatesys
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+
+- name: Display the last line of the previous task to check the stats
+  debug:
+    msg:  "{{updatesys.stdout_lines|last}}"
+
 - name: Install pip packages in machines
   become: true
   pip:
     name:
-      - jsondiff      
+      - jsondiff
