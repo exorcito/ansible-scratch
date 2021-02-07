@@ -1,11 +1,16 @@
 [ansible]
-awx.sw.com
+bakura.sw.com
 
-[master]
+[masters]
+scarif.sw.com
 mustafar1.sw.com
 
-[managers]
+[workers]
 mustafar2.sw.com
 mustafar3.sw.com
-[managers:vars]
+
+[wsl]
+localhost ansible_connection=local
+
+[all:vars]
 ansible_python_interpreter=/usr/bin/python3

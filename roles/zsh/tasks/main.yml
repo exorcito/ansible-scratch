@@ -6,6 +6,9 @@
             - zsh
             - zsh-antigen
             - zsh-syntax-highlighting
+            - git
+            - zsh-autosuggestions
+            - colorize
 
     - name: Check if .zshrc exists
       stat:
@@ -21,37 +24,36 @@
       git:
         repo=https://github.com/robbyrussell/oh-my-zsh
         dest=~/.oh-my-zsh
-      when: not stat_oh_my_zsh_result.stat.exists
 
     - name: Cloning theme Powerline10K
       git:
         repo=https://github.com/romkatv/powerlevel10k.git
-        dest=~/.oh-my-zsh/custom/themes/powerlevel10k
-      when: not stat_oh_my_zsh_result.stat.exists        
+        dest=~/.oh-my-zsh/custom/themes/powerlevel10k  
 
     - name: Install plugin ZSH - completions
       git:
         repo=git://github.com/zsh-users/zsh-completions.git
         dest=~/.oh-my-zsh/custom/plugins/zsh-completions
-      when: not stat_oh_my_zsh_result.stat.exists        
   
     - name: Install plugin ZSH - suggestions
       git:
         repo=https://github.com/zsh-users/zsh-autosuggestions
         dest=~/.oh-my-zsh/custom/plugins/zsh-autosuggestions          
-      when: not stat_oh_my_zsh_result.stat.exists        
+
+    - name: Install plugin ZSH - syntax-highlighting
+      git:
+        repo=https://github.com/zsh-users/zsh-syntax-highlighting
+        dest=~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
     - name: Define default shell ZSH
       become: true
       shell: chsh exorcito -s /usr/bin/zsh
-      when: not stat_rc_result.stat.exists      
   
     - name: Cloning custom .zshrc file from git
       git:
         repo=https://github.com/exorcito/dotfiles.git
         dest=~/dotfiles
         force=yes
-      when: not stat_rc_result.stat.exists             
   
     - name: Delete ZSH profile
       file:
@@ -62,4 +64,3 @@
       copy:
         src: ~/dotfiles/.zshrc 
         dest: ~/.zshrc
-      #when: not stat_rc_result.stat.exists           

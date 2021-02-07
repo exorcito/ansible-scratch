@@ -1,0 +1,8 @@
+# Install AWS role from the Ansible Galaxy
+- src: singleplatform-eng.awscli
+# Install Terraform role from the Ansible Galaxy
+- src: andrewrothstein.terraform
+# Install Kubectl role from the Ansible Galaxy
+- src: andrewrothstein.kubectl
+# Install Helm role from the Ansible Galaxy
+- src: andrewrothstein.kubernetes-helm

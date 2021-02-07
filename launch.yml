@@ -1,16 +1,26 @@
-- hosts: master,managers
+- hosts: all
   roles:
     - ubuntu
 
-- hosts: ansible,master,managers
+- hosts: all
   roles:
     - zsh
 
-- hosts: ansible
+- hosts: awx
   roles:
     - awx
-    - nfs-server
 
-- hosts: master,managers
+- hosts: awx,masters,workers
   roles:
     - nfs-client
+
+- hosts: wsl
+  become: true
+  vars:
+    awscli_user: exorcito
+    awscli_user_home_dir: /home/exorcito
+  roles:
+    - andrewrothstein.terraform
+    - singleplatform-eng.awscli
+    - andrewrothstein.kubectl
+    - andrewrothstein.kubernetes-helm

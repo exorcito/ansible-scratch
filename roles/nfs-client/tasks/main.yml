@@ -5,14 +5,14 @@
       - nfs-common
 
 - name: Verify share NFS
-  shell: grep "^bakura.sw.com:/share" /etc/fstab
+  shell: grep "^192.168.0.150:/volume1/backups/VMS:/share" /etc/fstab
   register: test_fstab_data
   ignore_errors: yes
 
 - name: Add share to fstab
   lineinfile:
     dest: /etc/fstab
-    line: "bakura.sw.com:/share /share nfs x-systemd.automount,rw,nolock 0 0"
+    line: "192.168.0.150:/volume1/backups/VMS /share nfs x-systemd.automount,rw,nolock 0 0"
   become: true        
   register: fstab
   when: test_fstab_data != ""           
@@ -25,4 +25,4 @@
 
 - name: Mount /share
   shell: mount /share
-  become: true      
+  become: true
