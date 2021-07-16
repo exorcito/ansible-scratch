@@ -1,8 +1,8 @@
-- hosts: all
+- hosts: awx,masters,workers
   roles:
     - ubuntu
 
-- hosts: all
+- hosts: awx,masters,workers
   roles:
     - zsh
 

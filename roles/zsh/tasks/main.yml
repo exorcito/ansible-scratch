@@ -64,3 +64,8 @@
       copy:
         src: ~/dotfiles/.zshrc 
         dest: ~/.zshrc
+
+    - name: Install Powerline config
+      copy:
+        src: ~/dotfiles/.p10k.zsh 
+        dest: ~/.p10k.zsh

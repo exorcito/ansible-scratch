@@ -28,9 +28,9 @@
       - apt-transport-https
       - ca-certificates
       - curl
+      - git
       - gnupg2
       - software-properties-common
-      - lastpass-cli
       - sshpass
       - figlet
       - ntp
@@ -40,10 +40,16 @@
       - python3-venv
       - python-dev
       - python-setuptools
+      - qemu-guest-agent
       - virtualenv
       - s3fs
       - sysvbanner
     update_cache: yes
+
+- name: Install bitwarden
+  become: true
+  snap:
+    name: bw
 
 - name: Upgrade all apt packages
   become: true
@@ -72,6 +78,7 @@
     - "00-header"
     - "10-help-text"
     - "50-motd-news"
+    - "50-landscape-sysinfo"
 
 - name: Cloning custom .dotfiles from git
   git:
